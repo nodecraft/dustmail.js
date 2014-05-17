@@ -31,7 +31,7 @@ Code Examples
   // This could allow you to use the generated HTML/Plaintext to save or manipulate further as you choose.
   dustmail.render(data.template, data.vars, function(err, renderData) {
   	if(err) {
-  		res.fail(err);
+  		console.log(err);
   	}else{
   		dustmail.send({
   			to: data.to,
@@ -63,4 +63,28 @@ Code Examples
   		console.log(data);
   	}
   });
+```
+
+Drivers
+-------
+Writing an email driver for dustmail.js is extremely simple. Your driver simply needs to return a function that handles the sending of the generated email. The only argument to this function (other than a callback) contains an object of to, from and subject, with the HtmlBody and TextBody passed into the sub-object render. An example of the postmark driver can be seen below. 
+```javascript
+var postmark = require('postmark');
+module.exports = function(key) {
+	return function(emailData, callback) {
+		postmark(key).send({
+			To: emailData.to,
+			From: emailData.from,
+			Subject: emailData.subject,
+			HtmlBody: emailData.render.HtmlBody,
+			TextBody: emailData.render.TextBody
+		}, function(err, result) {
+			if(err) {
+				callback(err);
+			}else{
+				callback(null,result);
+			}
+		});
+	}
+}
 ```
