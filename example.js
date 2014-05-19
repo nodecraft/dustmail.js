@@ -9,11 +9,11 @@ var	dustmail = require('./dustmail')({
 var data = {
 	template: 'layout_example',
 	vars: {
-		name: 'James'
-	},
-	to: 'james@getnodecraft.net',
-	from: 'support@nodecraft.com',
-	subject: 'Dustmail is awesome!',
+       name: 'Mr. Example'
+   },
+   to: 'example@example.com',
+   from: 'example@example.com',
+   subject: 'Dustmail is awesome!',
 	attachments: [ // array of objects
 		{
 			name: 'readme.txt',
