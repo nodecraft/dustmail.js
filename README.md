@@ -12,30 +12,32 @@ Dustmail is also designed to allow you to use whatever email sending server you 
 Code Examples
 -------------
 ```javascript
-var	dustmail = require('dustmail')(),
-	postmark = require('dustmail-postmark')('postmark_api_key');
-
+var	dustmail = require('./dustmail')({
+		layouts_dir: './example_templates/layouts/',
+		partials_dir: './example_templates/partials/',
+		templates_dir: './example_templates/templates',
+		driver: require('dustmail-postmark')('key') // you can also specify your driver when initialising dustmail
+	}),
+	fs = require('fs'); // only necessary for reading file for attachment example
 
 var data = {
-	template: 'test',
+	template: 'layout_example',
 	vars: {
-		name: 'Mr. Example'
-	},
-	to: 'example@example.com',
-	from: 'example@example.com',
-	subject: 'Dustmail is awesome!',
+       name: 'Mr. Example'
+   },
+   to: 'example@example.com',
+   from: 'example@example.com',
+   subject: 'Dustmail is awesome!',
 	attachments: [ // array of objects
 		{
 			name: 'readme.txt',
-			content: 'Hello World!', // full content of the file
+			content: fs.readFileSync('./README.md'), // full content of the file
 			contentType: 'text/plain'
 		}
 	]
 }
-dustmail.driver(postmark); // set our driver to postmark, as defined above
 
 // This example demos use of rendering template first, and passing that directly to send.
-// It only sends plain text, as specified via the sendType
 // This could allow you to use the generated HTML/Plaintext to save or manipulate further as you choose.
 dustmail.render(data.template, data.vars, function(err, renderData) {
 	if(err) {
@@ -59,8 +61,7 @@ dustmail.render(data.template, data.vars, function(err, renderData) {
 });
 
 // This example simply sends an email using the template and variables specified.
-// It only sends html, as specified via the sendType
-// Rendering the template HTML is handled internally.
+// Rendering the template HTML/Plaintext is handled internally.
 dustmail.send({
 	to: data.to,
 	from: data.from,
@@ -68,7 +69,7 @@ dustmail.send({
 	attachments: data.attachments,
 	template: data.template,
 	vars: data.vars,
-	sendType: 'html',
+	sendType: 'text',
 }, function(err, data) {
 	if(err) {
 		console.log(err);
