@@ -1,0 +1,15 @@
+{
+	"name":"dustmail-mandrill",
+	"description": "Mandrill driver for dustmail",
+	"author": "NodeCraft Hosting LLC <admin@getnodecraft.net> (http://getnodecraft.net)",
+	"version":"0.0.1",
+	"main": "dustmail-mandrill.js",
+	"repository": {
+	  "type": "git",
+	  "url": "https://github.com/nodecraft/dustmail-mandrill.js.git"
+	},
+	"dependencies":{
+		"underscore": "*",
+		"mandrill-api": "*"
+	}
+}

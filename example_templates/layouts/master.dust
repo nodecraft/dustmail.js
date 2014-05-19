@@ -1,0 +1,13 @@
+<header>This is the email header<header>
+
+{?_plaintext}
+	This is the plaintext header. This will only be seen in pure plaintext emails, in addition to the header above.
+{/_plaintext}
+
+{>"partials/css" /}
+{+body /}
+
+<footer>This is the email footer</footer>
+{?_plaintext}
+	This is the plaintext footer. This will only be seen in pure plaintext emails, in addition to the footer above.
+{/_plaintext}
