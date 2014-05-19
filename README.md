@@ -12,7 +12,7 @@ Dustmail is also designed to allow you to use whatever email sending server you 
 Code Examples
 -------------
 ```javascript
-var	dustmail = require('./dustmail')({
+var	dustmail = require('dustmail')({
 		layouts_dir: './example_templates/layouts/',
 		partials_dir: './example_templates/partials/',
 		templates_dir: './example_templates/templates',
