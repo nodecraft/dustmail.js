@@ -64,7 +64,7 @@ dustmail.render(data.template, data.vars, function(err, renderData) {
 dustmail.send({
 	to: data.to,
 	from: data.from,
-	subject: data.subject +'manual send',
+	subject: data.subject,
 	attachments: data.attachments,
 	template: data.template,
 	vars: data.vars,
@@ -79,10 +79,10 @@ dustmail.send({
 ```
 Errors
 ------
-Errors are generally returned in the following format. 'raw' is sometimes not included where not applicable.
+Errors are returned in the following format. 'raw' is not included where not applicable.
 ```javascript
 {
-	message: 'Friendly message',
+	message: 'simple message',
 	raw: 'raw, technical message'
 }
 ```
