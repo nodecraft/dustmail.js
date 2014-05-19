@@ -4,87 +4,89 @@ dustmail.js
     npm install dustmail
 
 
-dustmail.js - Email moduled powered by the template engine known as [Dust](https://github.com/linkedin/dustjs/wiki/Dust-Tutorial) and allowing for extremely simple extensions with the use of drivers.
+Dustmail is a simple email module designed to leverage dust templates for sending emails out. This module allows you to create templates like many developers have grown to expect with an express server, complete with layouts and partials.
 
-Two examples drivers are included for a couple popular API based mail services known as [Postmark](https://postmarkapp.com) and [Mandrill](http://mandrill.com/). These are simply examples to demonstrate the power of drivers, but likely shouldn't be used in a production environment.
+Dustmail is also designed to allow you to use whatever email sending server you are most comfortable with by providing a simple and easy to use driver system. We've included two drivers for popular mail services Postmark and Mandrill. Both drivers are separate from Dustmail and can be installed via npm.
 
 
 Code Examples
 -------------
 ```javascript
-  var	dustmail = require('./dustmail')(),
-	postmark = require('./drivers/postmark')('postmark_api_key');
+var	dustmail = require('dustmail')(),
+	postmark = require('dustmail-postmark')('postmark_api_key');
 
 
-  var data = {
-	  template: 'test',
-	  vars: {
-		name: 'James'
-  	},
-  	to: 'james@getnodecraft.net',
-  	from: 'support@nodecraft.com',
-  	subject: 'Dustmail is awesome!',
-  }
-  dustmail.driver(postmark); // set our driver to postmark, as defined above
-  
-  // This example demos use of rendering template first, and passing that directly to send.
-  // This could allow you to use the generated HTML/Plaintext to save or manipulate further as you choose.
-  dustmail.render(data.template, data.vars, function(err, renderData) {
-  	if(err) {
-  		console.log(err);
-  	}else{
-  		dustmail.send({
-  			to: data.to,
-  			from: data.from,
-  			subject: data.subject,
-  			render: renderData
-  		}, function(err, data) {
-  			if(err) {
-  				console.log(err);
-  			}else{
-  				console.log(data);
-  			}
-  		});
-  	}
-  });
-  
-  // This example simply sends an email using the template and variables specified.
-  // Rendering the template HTML/Plaintext is handled internally.
-  dustmail.send({
-  	to: data.to,
-  	from: data.from,
-  	subject: data.subject,
-  	template: data.template,
-  	vars: data.vars
-  }, function(err, data) {
-  	if(err) {
-  		console.log(err);
-  	}else{
-  		console.log(data);
-  	}
-  });
-```
+var data = {
+	template: 'test',
+	vars: {
+		name: 'Mr. Example'
+	},
+	to: 'example@example.com',
+	from: 'example@example.com',
+	subject: 'Dustmail is awesome!',
+	attachments: [ // array of objects
+		{
+			name: 'readme.txt',
+			content: 'Hello World!', // full content of the file
+			contentType: 'text/plain'
+		}
+	]
+}
+dustmail.driver(postmark); // set our driver to postmark, as defined above
 
-Drivers
--------
-Writing an email driver for dustmail.js is extremely simple. Your driver simply needs to return a function that handles the sending of the generated email. The only argument to this function (other than a callback) contains an object of to, from and subject, with the HtmlBody and TextBody passed into the sub-object render. An example of the postmark driver can be seen below. 
-```javascript
-var postmark = require('postmark');
-module.exports = function(key) {
-	return function(emailData, callback) {
-		postmark(key).send({
-			To: emailData.to,
-			From: emailData.from,
-			Subject: emailData.subject,
-			HtmlBody: emailData.render.HtmlBody,
-			TextBody: emailData.render.TextBody
-		}, function(err, result) {
+// This example demos use of rendering template first, and passing that directly to send.
+// It only sends plain text, as specified via the sendType
+// This could allow you to use the generated HTML/Plaintext to save or manipulate further as you choose.
+dustmail.render(data.template, data.vars, function(err, renderData) {
+	if(err) {
+		res.fail(err);
+	}else{
+		dustmail.send({
+			to: data.to,
+			from: data.from,
+			subject: data.subject,
+			attachments: data.attachments,
+			render: renderData,
+			sendType: 'html',
+		}, function(err, data) {
 			if(err) {
-				callback(err);
+				console.log(err);
 			}else{
-				callback(null,result);
+				console.log(data);
 			}
 		});
 	}
+});
+
+// This example simply sends an email using the template and variables specified.
+// It only sends html, as specified via the sendType
+// Rendering the template HTML is handled internally.
+dustmail.send({
+	to: data.to,
+	from: data.from,
+	subject: data.subject +'manual send',
+	attachments: data.attachments,
+	template: data.template,
+	vars: data.vars,
+	sendType: 'html',
+}, function(err, data) {
+	if(err) {
+		console.log(err);
+	}else{
+		console.log(data);
+	}
+});
+```
+Errors
+------
+Errors are generally returned in the following format. 'raw' is sometimes not included where not applicable.
+```javascript
+{
+	message: 'Friendly message',
+	raw: 'raw, technical message'
 }
 ```
+Drivers
+-------
+Writing an email driver for dustmail.js is extremely simple. The driver is just a basic function to handle the email being sent. See [our documentation](https://github.com/nodecraft/dustmail.js/wiki/Creating-a-dustmail-driver) for more information on writing your own.
+
