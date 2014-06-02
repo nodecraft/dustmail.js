@@ -15,7 +15,7 @@ Code Examples
 var	dustmail = require('dustmail')({
 		layouts_dir: './example_templates/layouts/',
 		partials_dir: './example_templates/partials/',
-		templates_dir: './example_templates/templates',
+		templates_dir: './example_templates/templates/',
 		driver: require('dustmail-postmark')('key') // you can also specify your driver when initialising dustmail
 	}),
 	fs = require('fs'); // only necessary for reading file for attachment example
