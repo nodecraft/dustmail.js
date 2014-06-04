@@ -19,7 +19,7 @@ module.exports = function(key) {
 					type: attachment.contentType
 				});
 			});
-			sendData.Attachments = attachments;
+			sendData.attachments = attachments;
 		}
 		mandrill_client.messages.send({message: sendData}, function(result) {
 			callback(null,result);
