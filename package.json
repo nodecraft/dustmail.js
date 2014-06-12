@@ -2,7 +2,7 @@
   "name": "dustmail",
   "description": "Email module powered by Dust templates",
   "author": "NodeCraft Hosting LLC <admin@getnodecraft.net> (http://getnodecraft.net)",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dustmail.js",
   "repository": {
     "type": "git",
