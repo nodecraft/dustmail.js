@@ -2,7 +2,7 @@
 	"name":"dustmail-postmark",
 	"description": "Postmark driver for dustmail",
 	"author": "NodeCraft Hosting LLC <admin@getnodecraft.net> (http://getnodecraft.net)",
-	"version":"0.0.2",
+	"version":"0.0.3",
 	"main": "dustmail-postmark.js",
 	"repository": {
 	  "type": "git",
